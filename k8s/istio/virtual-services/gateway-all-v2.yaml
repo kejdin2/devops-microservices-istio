@@ -1,0 +1,13 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: vs-frontend-gateway-all-v2
+  namespace: devops
+spec:
+  hosts:
+    - frontend-gateway
+  http:
+    - route:
+        - destination:
+            host: frontend-gateway
+            subset: v2

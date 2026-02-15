@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-gateway-v2
+  namespace: devops
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: frontend-gateway
+      version: v2
+  template:
+    metadata:
+      labels:
+        app: frontend-gateway
+        version: v2
+    spec:
+      containers:
+        - name: frontend-gateway
+          image: frontend-gateway:v2
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          env:
+            - name: DOWNSTREAM_SERVICEA
+              value: "http://service-a"
+            - name: DOWNSTREAM_SERVICEB
+              value: "http://service-b"
+            - name: DOWNSTREAM_SERVICEC
+              value: "http://service-c"

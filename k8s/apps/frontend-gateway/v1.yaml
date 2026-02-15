@@ -1,0 +1,44 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-gateway
+  namespace: devops
+spec:
+  selector:
+    app: frontend-gateway
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-gateway-v1
+  namespace: devops
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: frontend-gateway
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: frontend-gateway
+        version: v1
+    spec:
+      containers:
+        - name: frontend-gateway
+          image: frontend-gateway:v1
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          env:
+            # In-cluster service DNS names:
+            - name: DOWNSTREAM_SERVICEA
+              value: "http://service-a"
+            - name: DOWNSTREAM_SERVICEB
+              value: "http://service-b"
+            - name: DOWNSTREAM_SERVICEC
+              value: "http://service-c"

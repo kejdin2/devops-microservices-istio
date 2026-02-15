@@ -1,0 +1,7 @@
+server:
+  port: 8080
+
+downstream:
+  serviceA: "http://service-a:8080"
+  serviceB: "http://service-b:8080"
+  serviceC: "http://service-c:8080"

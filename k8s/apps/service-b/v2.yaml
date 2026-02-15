@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service-b-v2
+  namespace: devops
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: service-b
+      version: v2
+  template:
+    metadata:
+      labels:
+        app: service-b
+        version: v2
+    spec:
+      containers:
+        - name: service-b
+          image: service-b:v2
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SPRING_DATA_REDIS_HOST
+              value: "redis"
+            - name: SPRING_DATA_REDIS_PORT
+              value: "6379"

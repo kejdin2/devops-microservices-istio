@@ -1,0 +1,51 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: vs-service-a-ab
+  namespace: devops
+spec:
+  hosts:
+    - service-a
+  http:
+    - match:
+        - headers:
+            x-type:
+              exact: canary
+      route:
+        - destination:
+            host: service-a
+            subset: v2
+            port:
+              number: 80
+    - route:
+        - destination:
+            host: service-a
+            subset: v1
+            port:
+              number: 80
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: vs-service-c-ab
+  namespace: devops
+spec:
+  hosts:
+    - service-c
+  http:
+    - match:
+        - headers:
+            x-type:
+              exact: canary
+      route:
+        - destination:
+            host: service-c
+            subset: v2
+            port:
+              number: 80
+    - route:
+        - destination:
+            host: service-c
+            subset: v1
+            port:
+              number: 80
